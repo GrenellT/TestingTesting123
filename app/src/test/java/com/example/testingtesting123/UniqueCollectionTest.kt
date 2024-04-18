@@ -31,14 +31,34 @@ class UniqueCollectionTest {
     }
 
     @Test
-    fun clearAllItems() {
-        collection.addItem(Item("item1"))
+    fun getItem() {
+
+        val expectedItem1 = Item("Item1")
+        val expectedItem2 = Item("Item2")
+        collection.addItem(expectedItem1)
+        val actualItem1 = collection.get(0)
+        assert(expectedItem1 == actualItem1) {"Get does not return the correct item"}
+
+        collection.addItem(expectedItem2)
+        val actualItem2 = collection.get(1)
+        assert(expectedItem2 == actualItem2) {"Get does not return the correct item"}
+    }
+
+    @Test
+    fun removeItem() {
+        collection.remove(Item("InvalidItem"))
+        assert(collection.size() == 0)
+
+        collection.addItem(Item("Item1"))
         collection.addItem(Item("Item2"))
+        collection.addItem(Item("Item3"))
 
-        val originalSize = collection.size()
-        collection.clear()
-        val newSize = collection.size();
+        collection.remove(Item("InvalidItem"))
+        assert(collection.size() == 3)
 
-        assert(originalSize == 2 && newSize == 0) {"Items not cleared"}
+        collection.remove(Item("Item2"))
+        val secondItem = collection.get(1)
+        assert(collection.size() == 2)
+        assert(secondItem.name == "Item3")
     }
 }
